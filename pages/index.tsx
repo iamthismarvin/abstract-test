@@ -2,8 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import ART from "data/art.json";
+import ArtItem from "components/ArtItem";
 
 const Home: NextPage = () => {
+  const artData = ART.data;
+
   return (
     <>
       <Head>
@@ -18,7 +21,12 @@ const Home: NextPage = () => {
           {/* TODO: Filter art */}
           <input type="search" placeholder="Search…" className="border" />
         </form>
-        <ul>{/* TODO: List of art */}</ul>
+        <ul className="flex flex-col gap-4 md:grid md:grid-cols-2">
+          {/* TODO: List of art */}
+          {artData.map((data) => (
+            <ArtItem key={data.title} data={data} />
+          ))}
+        </ul>
       </main>
     </>
   );
