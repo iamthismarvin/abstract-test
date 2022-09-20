@@ -1,11 +1,29 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import ART from "data/art.json";
 import ArtItem from "components/ArtItem";
+import React, { useEffect, useState } from "react";
+import { IArt } from "utils/types";
 
 const Home: NextPage = () => {
   const artData = ART.data;
+  const [artFilter, setArtFilter] = useState("");
+  const [filteredArt, setFilteredArt] = useState(artData);
+
+  const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setArtFilter(event.target.value);
+
+  useEffect(() => {
+    setFilteredArt(
+      artData.filter((art) =>
+        Object.keys(art).some((property) =>
+          art[property as keyof IArt]
+            .toLocaleLowerCase()
+            .includes(artFilter.toLocaleLowerCase())
+        )
+      )
+    );
+  }, [artData, artFilter]);
 
   return (
     <>
@@ -16,17 +34,27 @@ const Home: NextPage = () => {
       </Head>
       <main className="mx-auto w-full max-w-screen-lg">
         {/* TODO: Show the 4 pieces of art along with their details */}
-        <h1>Example App</h1>
-        <form>
-          {/* TODO: Filter art */}
-          <input type="search" placeholder="Search…" className="border" />
-        </form>
-        <ul className="flex flex-col gap-4 md:grid md:grid-cols-2">
-          {/* TODO: List of art */}
-          {artData.map((data) => (
-            <ArtItem key={data.title} data={data} />
-          ))}
-        </ul>
+        <section className="mb-4">
+          <h1>Example App</h1>
+          <form>
+            {/* TODO: Filter art */}
+            <input
+              type="search"
+              placeholder="Search…"
+              className="border"
+              value={artFilter}
+              onChange={handleFilter}
+            />
+          </form>
+        </section>
+        <section>
+          <ul className="flex flex-col gap-4 md:grid md:grid-cols-2">
+            {/* TODO: List of art */}
+            {filteredArt.map((data) => (
+              <ArtItem key={data.title} data={data} />
+            ))}
+          </ul>
+        </section>
       </main>
     </>
   );

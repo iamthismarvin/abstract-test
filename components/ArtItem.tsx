@@ -1,17 +1,7 @@
 import Image from "next/image";
+import { IArt } from "utils/types";
 
-interface ArtItemProps {
-  data: {
-    artist: string;
-    title: string;
-    created_at: string;
-    medium: string;
-    description: string;
-    image_url: string;
-  };
-}
-
-const ArtItem: React.FC<ArtItemProps> = ({ data }) => {
+const ArtItem: React.FC<{ data: IArt }> = ({ data }) => {
   return (
     <div className="bg-slate-50 drop-shadow-md rounded-xl">
       <div className="h-72 relative">
